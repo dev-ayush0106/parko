@@ -1,0 +1,129 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 64px);
+  padding: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 36px 32px;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.logoIcon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(0,229,160,0.25);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+}
+.logoText {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.heading {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.sub {
+  color: var(--text2);
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.form { display: flex; flex-direction: column; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.forgotLink {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  transition: var(--trans);
+}
+.forgotLink:hover { opacity: 0.75; }
+
+.pwWrap { position: relative; }
+.pwWrap .input { padding-right: 40px; }
+.eyeBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.eyeBtn:hover { color: var(--text2); }
+
+.submit { margin-top: 4px; }
+.loading { opacity: 0.7; cursor: not-allowed; transform: none !important; }
+
+.dividerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text3);
+  font-size: 12px;
+  margin: 18px 0;
+}
+.dividerRow span {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.switchText  { text-align: center; font-size: 13px; color: var(--text2); }
+.switchLink  { color: var(--accent); font-weight: 500; }
+.switchLink:hover { text-decoration: underline; }
+
+.trustNote {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.fieldError {
+  font-size: 11px;
+  color: var(--danger, #ef4444);
+  margin-top: 3px;
+}
+
+.inputErr {
+  border-color: var(--danger, #ef4444) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15) !important;
+}
+
+@media (max-width: 480px) {
+  .card { padding: 28px 20px; }
+}

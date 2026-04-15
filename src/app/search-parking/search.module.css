@@ -1,0 +1,109 @@
+.hero { margin-bottom: 28px; }
+
+.heroTitle {
+  font-family: var(--font-head);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+.heroTitle span { color: var(--accent); }
+
+.heroSub { color: var(--text2); font-size: 14px; }
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 10px 12px 10px 16px;
+  margin-bottom: 14px;
+  transition: var(--trans);
+}
+.searchBar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.searchIcon { color: var(--text3); flex-shrink: 0; }
+
+.searchInput {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+.searchInput::placeholder { color: var(--text3); }
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: var(--trans);
+  white-space: nowrap;
+}
+.filterBtn:hover { border-color: var(--border2); color: var(--text); }
+
+.filterRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.chip {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: var(--trans);
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--border2); color: var(--text); }
+.chipOn {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.count {
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text3);
+}
+.emptyIcon { font-size: 52px; margin-bottom: 16px; }
+.empty h3  { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+.empty p   { font-size: 13px; }
+
+@media (max-width: 640px) {
+  .heroTitle { font-size: 26px; }
+  .grid      { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+}

@@ -1,0 +1,12 @@
+{
+  "/parking/[id]/page": "app/parking/[id]/page.js",
+  "/search-parking/page": "app/search-parking/page.js",
+  "/api/parking/[id]/route": "app/api/parking/[id]/route.js",
+  "/wallet/page": "app/wallet/page.js",
+  "/api/parking/route": "app/api/parking/route.js",
+  "/api/wallet/route": "app/api/wallet/route.js",
+  "/api/bookings/route": "app/api/bookings/route.js",
+  "/owner/dashboard/page": "app/owner/dashboard/page.js",
+  "/api/owner/stats/route": "app/api/owner/stats/route.js",
+  "/api/wallet/add/route": "app/api/wallet/add/route.js"
+}

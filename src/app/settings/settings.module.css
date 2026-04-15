@@ -1,0 +1,329 @@
+/* ── Layout ─────────────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ── Sidebar ────────────────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebarTab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--r);
+  border: none;
+  background: none;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.sidebarTab:hover { background: var(--bg3); color: var(--text); }
+.sidebarTabActive {
+  background: var(--accent-dim) !important;
+  color: var(--accent) !important;
+  font-weight: 600;
+}
+.sidebarTabDanger:hover  { background: rgba(255,77,109,0.08); color: var(--red); }
+.sidebarTabDangerActive  {
+  background: rgba(255,77,109,0.1) !important;
+  color: var(--red) !important;
+}
+
+/* ── Content Panel ──────────────────────────────────────── */
+.panel {
+  padding: 28px 32px;
+}
+
+.sectionTitle {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sectionSub {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 28px;
+}
+
+/* ── Form ───────────────────────────────────────────────── */
+.form { display: flex; flex-direction: column; gap: 18px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.readonlyInput {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 11px 14px;
+  color: var(--text3);
+  font-size: 14px;
+  font-family: var(--font-body);
+  cursor: not-allowed;
+}
+
+.pwWrap { position: relative; }
+.pwWrap .input { padding-right: 42px; }
+.eyeBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.eyeBtn:hover { color: var(--text2); }
+
+.pwReqs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 7px;
+}
+.reqMet   { font-size: 11px; color: #22c55e; }
+.reqUnmet { font-size: 11px; color: var(--text3); }
+
+.saveRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+.saveBtn {
+  width: auto;
+  padding: 10px 24px;
+  font-size: 13px;
+}
+.successMsg {
+  font-size: 13px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.errorMsg {
+  font-size: 13px;
+  color: var(--red);
+}
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0;
+}
+
+/* ── Sub-section heading ────────────────────────────────── */
+.subHeading {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+/* ── Theme toggle row ───────────────────────────────────── */
+.prefRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+}
+.prefLabel { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.prefDesc  { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+.toggle {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggleTrack {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  transition: var(--trans);
+}
+.toggleTrack.on { background: var(--accent); border-color: var(--accent); }
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text3);
+  transition: var(--trans);
+}
+.toggleTrack.on .toggleThumb {
+  transform: translateX(18px);
+  background: #08090e;
+}
+
+/* ── Danger Zone ────────────────────────────────────────── */
+.dangerBox {
+  border: 1px solid rgba(255,77,109,0.25);
+  border-radius: var(--r2);
+  padding: 24px;
+  background: rgba(255,77,109,0.04);
+}
+.dangerTitle {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+.dangerDesc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.btnDanger {
+  background: rgba(255,77,109,0.12);
+  color: var(--red);
+  border: 1px solid rgba(255,77,109,0.3);
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: var(--trans);
+}
+.btnDanger:hover {
+  background: rgba(255,77,109,0.2);
+  border-color: var(--red);
+}
+
+/* ── Delete confirm modal ───────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 400;
+  backdrop-filter: blur(3px);
+}
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 401;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  width: min(440px, 94vw);
+  padding: 28px;
+  animation: fadeUp 0.2s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+.modalIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255,77,109,0.1);
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.modalTitle {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.modalDesc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.modalBtns {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.modalBtns > * { flex: 1; }
+.fieldError {
+  font-size: 11px;
+  color: var(--red);
+  margin-top: 3px;
+}
+.inputErr {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 2px rgba(255,77,109,0.15) !important;
+}
+
+/* ── Mobile tabs (replaces sidebar) ────────────────────── */
+.mobileTabs {
+  display: none;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.mobileTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.mobileTab:hover { border-color: var(--border2); color: var(--text); }
+.mobileTabActive {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent) !important;
+}
+.mobileTabDangerActive {
+  background: rgba(255,77,109,0.1);
+  border-color: rgba(255,77,109,0.4);
+  color: var(--red) !important;
+}
+
+@media (max-width: 680px) {
+  .layout  { grid-template-columns: 1fr; gap: 0; }
+  .sidebar { display: none; }
+  .mobileTabs { display: flex; }
+  .panel { padding: 0; }
+}
