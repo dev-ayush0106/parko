@@ -1,9 +1,10 @@
 {
   "pages": {
-    "/page": [
+    "/wallet/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/css/app/wallet/page.css",
+      "static/chunks/app/wallet/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -11,47 +12,10 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/login/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/login/page.css",
-      "static/chunks/app/login/page.js"
-    ],
-    "/search-parking/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/search-parking/page.css",
-      "static/chunks/app/search-parking/page.js"
-    ],
-    "/parking/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/parking/[id]/page.css",
-      "static/chunks/app/parking/[id]/page.js"
-    ],
-    "/bookings/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/bookings/page.css",
-      "static/chunks/app/bookings/page.js"
-    ],
-    "/owner/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/owner/dashboard/page.css",
-      "static/chunks/app/owner/dashboard/page.js"
-    ],
-    "/add-parking/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/add-parking/page.css",
-      "static/chunks/app/add-parking/page.js"
-    ],
-    "/wallet/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/wallet/page.css",
-      "static/chunks/app/wallet/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

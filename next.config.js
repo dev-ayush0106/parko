@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com'],
   },
+  serverExternalPackages: ['razorpay'],
 }
 
 module.exports = nextConfig

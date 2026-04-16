@@ -16,15 +16,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Maximum add amount is ₹50,000' }, { status: 400 })
     }
 
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+      return NextResponse.json({ error: 'Payment gateway not configured' }, { status: 500 })
+    }
+
     const razorpay = new Razorpay({
-      key_id:     process.env.RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+      key_id:     process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
     })
 
     const order = await razorpay.orders.create({
       amount:   Math.round(amount) * 100, // paise
       currency: 'INR',
-      receipt:  `wallet_${user.userId}_${Date.now()}`,
+      receipt:  `w_${Date.now()}`,
     })
 
     return NextResponse.json({
@@ -34,6 +38,7 @@ export async function POST(req: NextRequest) {
       keyId:    process.env.RAZORPAY_KEY_ID,
     })
   } catch (err: unknown) {
+    console.error('[wallet/add]', err)
     const message = err instanceof Error ? err.message : 'Internal server error'
     return NextResponse.json({ error: message }, { status: 500 })
   }
