@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import SpotCard from '@/components/SpotCard'
 import { DBParkingSpot } from '@/lib/types'
@@ -9,10 +9,17 @@ import styles from './search.module.css'
 const FILTERS = ['All', '< ₹50/hr', 'Covered', 'Open Air', 'Underground', 'EV Charging', '24/7 Access']
 
 export default function SearchPage() {
-  const [spots,   setSpots]   = useState<DBParkingSpot[]>([])
-  const [loading, setLoading] = useState(true)
-  const [query,   setQuery]   = useState('')
-  const [filter,  setFilter]  = useState('All')
+  const [spots,       setSpots]       = useState<DBParkingSpot[]>([])
+  const [loading,     setLoading]     = useState(true)
+  const [query,       setQuery]       = useState('')
+  const [debouncedQ,  setDebouncedQ]  = useState('')
+  const [filter,      setFilter]      = useState('All')
+
+  // Debounce search — only update after 250ms of no typing
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQ(query), 250)
+    return () => clearTimeout(t)
+  }, [query])
 
   useEffect(() => {
     fetch('/api/parking')
@@ -22,16 +29,16 @@ export default function SearchPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const filtered = spots.filter(s => {
-    const q      = query.toLowerCase()
+  const filtered = useMemo(() => spots.filter(s => {
+    const q      = debouncedQ.toLowerCase()
     const matchQ = !q || s.title.toLowerCase().includes(q) || s.address.toLowerCase().includes(q)
     const matchF =
-      filter === 'All'                                                       ? true :
-      filter === '< ₹50/hr'                                                  ? s.pricePerHour < 50 :
-      ['Covered', 'Open Air', 'Underground'].includes(filter)               ? s.spotType === filter :
+      filter === 'All'                                             ? true :
+      filter === '< ₹50/hr'                                       ? s.pricePerHour < 50 :
+      ['Covered', 'Open Air', 'Underground'].includes(filter)     ? s.spotType === filter :
       s.amenities.some(a => a === filter)
     return matchQ && matchF
-  })
+  }), [spots, debouncedQ, filter])
 
   return (
     <div className="page-wrapper">

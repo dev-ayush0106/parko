@@ -27,4 +27,6 @@ const TransactionSchema = new Schema<ITransaction>(
   { timestamps: true }
 )
 
+TransactionSchema.index({ userId: 1, createdAt: -1 })
+
 export default mongoose.models.Transaction || mongoose.model<ITransaction>('Transaction', TransactionSchema)

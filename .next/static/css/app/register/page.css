@@ -1,0 +1,246 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./src/app/register/register.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+.register_wrap__LceeF {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 64px);
+  padding: 32px 20px;
+}
+
+.register_card__44uD5 {
+  width: 100%;
+  max-width: 440px;
+  padding: 36px;
+}
+
+.register_heading__zHmE2 {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.register_sub__TDsxE {
+  color: var(--text2);
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.register_roleTabs__EfzMb {
+  display: flex;
+  gap: 6px;
+  background: var(--bg3);
+  border-radius: var(--r);
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.register_roleTab__2H6X8 {
+  flex: 1 1;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--trans);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.register_roleTab__2H6X8:hover { color: var(--text); }
+.register_roleActive__PJBZg {
+  background: var(--accent) !important;
+  color: #08090e !important;
+  font-weight: 700;
+}
+
+.register_form__4g4Cp { display: flex; flex-direction: column; gap: 14px; }
+
+.register_field__pWUko { display: flex; flex-direction: column; gap: 6px; }
+
+.register_pwWrap__UkqMR { position: relative; }
+.register_pwWrap__UkqMR .register_input__3xGuf { padding-right: 40px; }
+.register_eyeBtn___WRAL {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.register_eyeBtn___WRAL:hover { color: var(--text2); }
+
+.register_terms__nH2zH {
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.6;
+}
+.register_termLink__MuI_1 { color: var(--accent); }
+.register_termLink__MuI_1:hover { text-decoration: underline; }
+
+.register_switchText__8vWZ_ { text-align: center; font-size: 13px; color: var(--text2); margin-top: 18px; }
+.register_switchLink__4chxj { color: var(--accent); font-weight: 500; }
+.register_switchLink__4chxj:hover { text-decoration: underline; }
+
+/* ── Terms Modal ── */
+.register_backdrop__MGGMV {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 400;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+}
+
+.register_modal__FKggV {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 401;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  width: min(560px, 94vw);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: register_fadeUp___UhnS 0.2s ease;
+}
+
+@keyframes register_fadeUp___UhnS {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.register_modalHeader__F_YpS {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.register_modalIcon__XQ6p9 {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.register_modalTitle__4rdoS {
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 3px;
+}
+.register_modalSub__AauVd {
+  font-size: 12px;
+  color: var(--text2);
+  margin: 0;
+}
+.register_closeBtn__xUAHn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: var(--trans);
+  flex-shrink: 0;
+}
+.register_closeBtn__xUAHn:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+
+.register_modalBody__F6bpL {
+  overflow-y: auto;
+  padding: 20px 24px;
+  flex: 1 1;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text2);
+}
+.register_modalBody__F6bpL h3 {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 18px 0 6px;
+}
+.register_modalBody__F6bpL h3:first-child { margin-top: 0; }
+.register_modalBody__F6bpL p { margin: 0 0 4px; }
+
+.register_modalFooter__61un4 {
+  padding: 18px 24px 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.register_agreeLabel__bGHct {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1.5;
+}
+.register_agreeCheck__NVeSz {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.register_modalBtns__HM1Ds {
+  display: flex;
+  gap: 10px;
+}
+.register_modalBtns__HM1Ds > * { flex: 1 1; }
+
+.register_fieldError__NOw1d {
+  font-size: 11px;
+  color: var(--danger, #ef4444);
+  margin-top: 3px;
+}
+
+.register_inputErr__H_t2N {
+  border-color: var(--danger, #ef4444) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15) !important;
+}
+
+.register_pwReqs__abetE {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 7px;
+}
+.register_reqMet__Hvka9   { font-size: 11px; color: #22c55e; }
+.register_reqUnmet__Gic9k { font-size: 11px; color: var(--text3); }
+
+@media (max-width: 480px) {
+  .register_card__44uD5 { padding: 24px 18px; }
+}
+

@@ -39,4 +39,8 @@ const BookingSchema = new Schema<IBooking>(
   { timestamps: true }
 )
 
+// Indexes for fast lookups
+BookingSchema.index({ userId: 1, createdAt: -1 })    // user bookings list
+BookingSchema.index({ parkingId: 1, createdAt: -1 }) // owner's incoming bookings
+
 export default mongoose.models.Booking || mongoose.model<IBooking>('Booking', BookingSchema)

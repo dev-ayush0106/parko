@@ -11,10 +11,10 @@ export async function GET(req: NextRequest) {
 
     await connectDB()
 
-    const wallet      = await Wallet.findOne({ userId: user.userId })
-    const transactions = await Transaction.find({ userId: user.userId })
-      .sort({ createdAt: -1 })
-      .limit(30)
+    const [wallet, transactions] = await Promise.all([
+      Wallet.findOne({ userId: user.userId }).select('balance').lean(),
+      Transaction.find({ userId: user.userId }).sort({ createdAt: -1 }).limit(30).lean(),
+    ])
 
     return NextResponse.json({
       balance:      wallet?.balance ?? 0,

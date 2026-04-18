@@ -1,19 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
 import { connectDB } from '@/lib/mongodb'
 import Parking from '@/lib/models/Parking'
 import { getUserFromRequest } from '@/lib/getUser'
 
-const JWT_SECRET = process.env.JWT_SECRET!
-
-// Helper also used internally
-function getUser(req: NextRequest) {
-  const auth  = req.headers.get('authorization') || ''
-  const token = auth.replace('Bearer ', '').trim()
-  if (!token) return null
-  try { return jwt.verify(token, JWT_SECRET) as { userId: string; role: string } }
-  catch { return null }
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -85,8 +74,15 @@ export async function GET(req: NextRequest) {
     if (maxPrice) filter.pricePerHour = { $lte: Number(maxPrice) }
     if (spotType && spotType !== 'All') filter.spotType = spotType
 
-    const spots = await Parking.find(filter).sort({ createdAt: -1 })
-    return NextResponse.json({ spots })
+    const spots = await Parking.find(filter)
+      .select('title pricePerHour spotType address photos amenities isLive ownerId createdAt')
+      .sort({ createdAt: -1 })
+      .lean()
+
+    return NextResponse.json(
+      { spots },
+      { headers: { 'Cache-Control': 'public, s-maxage=20, stale-while-revalidate=60' } }
+    )
 
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Internal server error'

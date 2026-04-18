@@ -39,4 +39,9 @@ const ParkingSchema = new Schema<IParking>(
   { timestamps: true }
 )
 
+// Indexes for fast common queries
+ParkingSchema.index({ isLive: 1, createdAt: -1 })   // public listing feed
+ParkingSchema.index({ ownerId: 1, createdAt: -1 })  // owner dashboard
+ParkingSchema.index({ title: 'text', address: 'text' }) // text search
+
 export default mongoose.models.Parking || mongoose.model<IParking>('Parking', ParkingSchema)

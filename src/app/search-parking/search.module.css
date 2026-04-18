@@ -105,5 +105,5 @@
 
 @media (max-width: 640px) {
   .heroTitle { font-size: 26px; }
-  .grid      { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .grid      { grid-template-columns: 1fr; gap: 12px; }
 }

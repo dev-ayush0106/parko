@@ -9,7 +9,7 @@ import styles from './add-parking.module.css'
 const AMENITIES  = ['CCTV', 'EV Charging', '24/7 Access', 'Washroom', 'Wheelchair accessible', 'Security guard', 'Valet', 'Gated']
 const SPOT_TYPES = ['Covered', 'Open Air', 'Underground', 'Valet', 'Rooftop']
 const DAYS       = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-const STEPS      = ['Basic info', 'Location', 'Schedule & photos', 'Amenities', 'Verify ownership']
+const STEPS      = ['Basic info', 'Location', 'Schedule & photos', 'Amenities'/*, 'Verify ownership'*/]
 
 interface FormState {
   title:         string
@@ -161,7 +161,7 @@ export default function AddParkingPage() {
   // ── Verification step state ──────────────────────────────────────
   const billRef                                         = useRef<HTMLInputElement>(null)
   const [billPreview,    setBillPreview]    = useState<string | null>(null)
-  const [billFile,       setBillFile]       = useState<File | null>(null)
+  const [,               setBillFile]       = useState<File | null>(null)
   const [ocrStatus,      setOcrStatus]      = useState<'idle' | 'scanning' | 'matched' | 'mismatch' | 'error'>('idle')
   const [ocrProgress,    setOcrProgress]    = useState(0)
   const [extractedName,  setExtractedName]  = useState('')
@@ -218,11 +218,6 @@ export default function AddParkingPage() {
   }
 
   const handleNext = () => {
-    if (step === 4) {
-      // verify step — submit instead
-      handleSubmit()
-      return
-    }
     if (validateStep()) setStep(s => s + 1)
   }
 
@@ -292,7 +287,7 @@ export default function AddParkingPage() {
 
     try {
       const Tesseract = (await import('tesseract.js')).default
-      const result = await Tesseract.recognize(file, 'eng', {
+      const result = await Tesseract.recognize(file, 'eng+hin', {
         logger: (m: { status: string; progress: number }) => {
           if (m.status === 'recognizing text') {
             setOcrProgress(Math.round(m.progress * 100))
@@ -300,8 +295,8 @@ export default function AddParkingPage() {
         },
       })
 
-      const text   = result.data.text
-      const found  = extractNameFromBill(text)
+      const text     = result.data.text
+      const found    = extractNameFromBill(text)
       const userName = getUser()?.name || ''
 
       setExtractedName(found)
@@ -323,26 +318,50 @@ export default function AddParkingPage() {
     if (billRef.current) billRef.current.value = ''
   }
 
-  // Extract name: look for "Name:", "Consumer Name:", "Account Holder:" etc.
+  // Extract name from bill — supports English labels, Hindi labels (नाम etc.),
+  // same-line and next-line name placement.
   const extractNameFromBill = (text: string): string => {
     const lines = text.split('\n').map(l => l.trim()).filter(Boolean)
 
-    const patterns = [
-      /(?:consumer\s*name|account\s*holder|name\s*of\s*consumer|customer\s*name|name)[:\s]+([A-Z][A-Za-z\s.]{2,40})/i,
-      /(?:श्री|smt\.|mr\.|mrs\.)\s*([A-Z][A-Za-z\s.]{2,40})/i,
+    // English label patterns — anchored to line start to avoid "Division Name", "Zone Name" etc.
+    const engPatterns = [
+      /^(?:consumer\s*name|name\s*of\s*consumer|account\s*holder|name\s*of\s*account\s*holder|customer\s*name|service\s*holder)[:\s]+([A-Za-z][A-Za-z\s.]{2,45})/i,
+      /^name[:\s]+([A-Za-z][A-Za-z\s.]{2,45})/i,
+      /^(?:smt\.|mr\.|mrs\.|shri|shrimati)\s*([A-Za-z][A-Za-z\s.]{2,45})/i,
     ]
 
+    // Hindi label patterns — anchored to line start so "Division नाम", "Vibhag नाम" etc. are ignored.
+    // Only matches when नाम / consumer-name label is the FIRST word on the line.
+    const hinPatterns = [
+      /^(?:उपभोक्ता\s*का\s*नाम|ग्राहक\s*का\s*नाम|खाताधारक\s*का\s*नाम|उपभोक्ता\s*नाम|ग्राहक\s*नाम)[:\s]*([A-Za-z][A-Za-z\s.]{2,45})/,
+      /^नाम[:\s]+([A-Za-z][A-Za-z\s.]{2,45})/,
+      /^(?:श्री|श्रीमती)\s*([A-Za-z][A-Za-z\s.]{2,45})/,
+    ]
+
+    // 1. Check same-line matches (English then Hindi)
     for (const line of lines) {
-      for (const pat of patterns) {
+      for (const pat of [...engPatterns, ...hinPatterns]) {
         const m = line.match(pat)
         if (m?.[1]) return m[1].trim().replace(/\s+/g, ' ')
       }
     }
 
-    // Fallback: find an ALL CAPS line 2–5 words that looks like a name
+    // 2. Check next-line: label on one line, name on the next
+    //    Label must start the line (^) to exclude "Division नाम", "Area Name" etc.
+    const labelRe = /^(?:consumer\s*name|account\s*holder|customer\s*name|name\s*of\s*consumer|service\s*holder|name|उपभोक्ता\s*का\s*नाम|ग्राहक\s*का\s*नाम|उपभोक्ता\s*नाम|खाताधारक|नाम)\s*[:\-]?\s*$/i
+    const isEnglishName = (s: string) => /^[A-Za-z][A-Za-z\s.]{3,45}$/.test(s) && s.split(' ').length >= 2
+
+    for (let i = 0; i < lines.length - 1; i++) {
+      if (labelRe.test(lines[i]) && isEnglishName(lines[i + 1])) {
+        return lines[i + 1].trim().replace(/\s+/g, ' ')
+      }
+    }
+
+    // 3. Fallback: ALL CAPS line of 2–5 words (common on older bills)
     for (const line of lines) {
-      if (/^[A-Z][A-Z\s.]{4,35}$/.test(line) && line.split(' ').length >= 2 && line.split(' ').length <= 5) {
-        return line.trim()
+      if (/^[A-Z][A-Z\s.]{4,35}$/.test(line)) {
+        const words = line.trim().split(/\s+/)
+        if (words.length >= 2 && words.length <= 5) return line.trim()
       }
     }
 
@@ -657,8 +676,8 @@ export default function AddParkingPage() {
         </div>
       )}
 
-      {/* ── Step 4: Verify ownership ── */}
-      {step === 4 && (
+      {/* ── Step 4: Verify ownership (temporarily disabled) ── */}
+      {false && step === 4 && (
         <div className={`card ${styles.stepCard} animate-fadeUp`}>
           <div className={styles.verifyHeader}>
             <div className={styles.verifyIconWrap}>
@@ -712,7 +731,7 @@ export default function AddParkingPage() {
               </div>
               <p className={styles.ocrProgressText}>
                 <Loader2 size={12} className={styles.spin} />
-                Scanning document… {ocrProgress}%
+                Scanning document (English + Hindi)… {ocrProgress}%
               </p>
             </div>
           )}
@@ -789,8 +808,7 @@ export default function AddParkingPage() {
           <button
             className={`btn-primary ${styles.nextBtn}`}
             onClick={handleSubmit}
-            disabled={submitting || ocrStatus !== 'matched'}
-            title={ocrStatus !== 'matched' ? 'Verify your electricity bill to continue' : ''}
+            disabled={submitting}
           >
             {submitting ? <><Loader2 size={14} className={styles.spin} /> Submitting…</> : 'Submit listing ✓'}
           </button>

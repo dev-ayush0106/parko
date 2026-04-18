@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Link from 'next/link'
 import { MapPin, Star } from 'lucide-react'
 import { DBParkingSpot } from '@/lib/types'
@@ -8,7 +9,7 @@ interface Props {
   delay?: number
 }
 
-export default function SpotCard({ spot, delay = 0 }: Props) {
+const SpotCard = memo(function SpotCard({ spot, delay = 0 }: Props) {
   return (
     <Link
       href={`/parking/${spot._id}`}
@@ -55,4 +56,6 @@ export default function SpotCard({ spot, delay = 0 }: Props) {
       </div>
     </Link>
   )
-}
+})
+
+export default SpotCard

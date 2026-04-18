@@ -19,16 +19,16 @@ export async function GET(req: NextRequest) {
     let bookings
 
     if (forOwner && user.role === 'owner') {
-      // Owner sees bookings on their spots
-      const ownerSpots = await Parking.find({ ownerId: user.userId }).select('_id')
-      const spotIds = ownerSpots.map(s => s._id)
+      const ownerSpots = await Parking.find({ ownerId: user.userId }).select('_id').lean()
+      const spotIds    = ownerSpots.map(s => s._id)
       bookings = await Booking.find({ parkingId: { $in: spotIds } })
         .populate('userId', 'name email phone')
         .sort({ createdAt: -1 })
+        .lean()
     } else {
-      // User sees their own bookings
       bookings = await Booking.find({ userId: user.userId })
         .sort({ createdAt: -1 })
+        .lean()
     }
 
     return NextResponse.json({ bookings })
@@ -55,15 +55,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Car number and vehicle type are required' }, { status: 400 })
     }
 
-    const spot = await Parking.findById(parkingId)
-    if (!spot)       return NextResponse.json({ error: 'Parking spot not found' }, { status: 404 })
-    if (!spot.isLive) return NextResponse.json({ error: 'Parking spot is not available' }, { status: 400 })
-
-    // Prevent owner booking their own spot
-    if (spot.ownerId.toString() === user.userId) {
-      return NextResponse.json({ error: 'You cannot book your own spot' }, { status: 400 })
-    }
-
     const start = new Date(startTime)
     const end   = new Date(endTime)
 
@@ -71,13 +62,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'End time must be after start time' }, { status: 400 })
     }
 
-    const hours      = Math.max(0.5, (end.getTime() - start.getTime()) / 3600000)
-    const subtotal   = Math.round(hours * spot.pricePerHour)
+    // Fetch spot + wallet in parallel
+    const [spot, wallet] = await Promise.all([
+      Parking.findById(parkingId).select('title address pricePerHour ownerId isLive').lean(),
+      Wallet.findOne({ userId: user.userId }).select('balance').lean(),
+    ])
+
+    if (!spot)        return NextResponse.json({ error: 'Parking spot not found' }, { status: 404 })
+    if (!spot.isLive) return NextResponse.json({ error: 'Parking spot is not available' }, { status: 400 })
+    if (spot.ownerId.toString() === user.userId)
+      return NextResponse.json({ error: 'You cannot book your own spot' }, { status: 400 })
+
+    const hours       = Math.max(0.5, (end.getTime() - start.getTime()) / 3600000)
+    const subtotal    = Math.round(hours * spot.pricePerHour)
     const platformFee = 10
     const totalPrice  = subtotal + platformFee
 
-    // Check wallet balance
-    const wallet = await Wallet.findOne({ userId: user.userId })
     if (!wallet || wallet.balance < totalPrice) {
       return NextResponse.json(
         { error: `Insufficient wallet balance. You need ₹${totalPrice} but have ₹${wallet?.balance ?? 0}. Please add money to your wallet first.` },
@@ -102,21 +102,18 @@ export async function POST(req: NextRequest) {
       paymentStatus:       'paid',
     })
 
-    // Deduct from wallet
-    await Wallet.findOneAndUpdate(
-      { userId: user.userId },
-      { $inc: { balance: -totalPrice } }
-    )
-
-    // Record debit transaction
-    await Transaction.create({
-      userId:      user.userId,
-      type:        'debit',
-      amount:      totalPrice,
-      description: `Booking: ${spot.title}`,
-      bookingId:   booking._id,
-      status:      'success',
-    })
+    // Deduct wallet + record transaction in parallel
+    await Promise.all([
+      Wallet.findOneAndUpdate({ userId: user.userId }, { $inc: { balance: -totalPrice } }),
+      Transaction.create({
+        userId:      user.userId,
+        type:        'debit',
+        amount:      totalPrice,
+        description: `Booking: ${spot.title}`,
+        bookingId:   booking._id,
+        status:      'success',
+      }),
+    ])
 
     return NextResponse.json({ booking }, { status: 201 })
 
