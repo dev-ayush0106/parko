@@ -1,11 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/search-parking/page": "app/search-parking/page.js",
-  "/register/page": "app/register/page.js",
-  "/api/parking/route": "app/api/parking/route.js",
-  "/bookings/page": "app/bookings/page.js",
-  "/owner/dashboard/page": "app/owner/dashboard/page.js",
-  "/api/parking/[id]/route": "app/api/parking/[id]/route.js",
-  "/api/bookings/route": "app/api/bookings/route.js",
-  "/parking/[id]/page": "app/parking/[id]/page.js"
+  "/add-parking/page": "app/add-parking/page.js"
 }
