@@ -714,7 +714,7 @@ export default function AddParkingPage() {
           {billPreview && ocrStatus !== 'idle' && (
             <div className={styles.billPreviewWrap}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={billPreview} alt="Bill preview" className={styles.billPreviewImg} />
+              <img src={billPreview ?? undefined} alt="Bill preview" className={styles.billPreviewImg} />
               {!['matched', 'mismatch', 'error'].includes(ocrStatus) && (
                 <div className={styles.billOverlay}>
                   <div className={styles.scanLine} />

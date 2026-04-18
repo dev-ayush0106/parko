@@ -43,7 +43,9 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'ik.imagekit.io'],
   },
-  serverExternalPackages: ['razorpay'],
+  experimental: {
+    serverComponentsExternalPackages: ['razorpay'],
+  },
   async headers() {
     return [
       {
