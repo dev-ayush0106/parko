@@ -9,9 +9,9 @@ const imagekit = new ImageKit({
 
 export async function GET() {
   try {
-    // Explicitly set expire to 30 minutes from now in Unix seconds
+    const token  = crypto.randomUUID()
     const expire = Math.floor(Date.now() / 1000) + 1800
-    const authParams = imagekit.getAuthenticationParameters(undefined, expire)
+    const authParams = imagekit.getAuthenticationParameters(token, expire)
     return NextResponse.json(authParams)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'ImageKit auth failed'
