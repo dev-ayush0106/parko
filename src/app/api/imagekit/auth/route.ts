@@ -10,7 +10,10 @@ export async function GET() {
       .update(token + expire)
       .digest('hex')
 
-    return NextResponse.json({ token, expire, signature })
+    return NextResponse.json(
+      { token, expire, signature },
+      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+    )
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'ImageKit auth failed'
     return NextResponse.json({ error: message }, { status: 500 })

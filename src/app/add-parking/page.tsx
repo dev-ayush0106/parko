@@ -231,7 +231,7 @@ export default function AddParkingPage() {
 
     for (const file of Array.from(files)) {
       try {
-        const authRes = await fetch('/api/imagekit/auth')
+        const authRes = await fetch('/api/imagekit/auth', { cache: 'no-store' })
         if (!authRes.ok) throw new Error('Failed to get ImageKit auth')
         const { token, expire, signature } = await authRes.json()
 
