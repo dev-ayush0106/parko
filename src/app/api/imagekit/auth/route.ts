@@ -12,7 +12,15 @@ export async function GET() {
 
     return NextResponse.json(
       { token, expire, signature },
-      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+      {
+        headers: {
+          'Cache-Control':          'no-store, no-cache, must-revalidate, max-age=0',
+          'Surrogate-Control':      'no-store',
+          'Netlify-CDN-Cache-Control': 'no-store',
+          'Pragma':                 'no-cache',
+          'Vary':                   '*',
+        },
+      }
     )
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'ImageKit auth failed'
